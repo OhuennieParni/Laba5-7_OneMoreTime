@@ -40,7 +40,7 @@ public class AuthService {
         user.setBirthDate(birthDate);
         user.setPassword(password);
         user.setRole("user");
-        user.setVisits(0);
+        user.setVisits(1);
 
         // ----- сохранение аватара -----
         if (avatar != null && !avatar.isEmpty()) {
