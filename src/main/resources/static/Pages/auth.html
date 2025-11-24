@@ -1,0 +1,77 @@
+<!-- 24ВП2 Алёшин Вар.№1 Лаба №6 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="#">
+        <title>Администрация города</title>
+        <link href="../CSS/mystyle.css" rel="stylesheet" type="text/css"/>
+        <script src="../JS/authscript.js" defer></script>
+        <meta charset="UTF-8">
+        <script src="../JS/lib/jquery.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="box">
+            <div class="container">
+                <div class="text greatingText">
+                    <h2>Добро пожаловать</h2>
+                    <div class="taskText">
+                        <div>Лаба 5-7</div>
+                        <div>Выполнили: 
+                            <p>Алёшин Валерий</p> <p>Щипалкин Артём</p>
+                        </div>
+                        <div>Лучшая группа ПГУ: 24ВП2</div>
+                        <div>Вариант 1</div>
+                        <button id="BackBtn">Назад</button>
+                    </div>
+                </div>
+                <div id="logWindow" class="innerbox">
+                    <div class="bar">
+                        <h4 class="text topBarText">Вход</h4>
+                    </div> 
+                    <div class="authContainer">
+                        <div class="inputBlock">
+                            <label for="email">Почта</label>
+                            <input type="text" id="email" placeholder="Почта">
+                        </div>
+                        <div class="inputBlock">
+                            <label for="password">Пароль</label>
+                            <input type="password" id="password" placeholder="Пароль">
+                        </div>
+                    </div>
+                    <button id="loginBtn">Войти</button>
+                    <button id="toRegister" class="toggleBtn">Ещё не зарегистрированы?</button>
+                </div>
+                <div id="regWindow" class="innerbox hidden">
+                    <div class="bar">
+                        <h4 class="text topBarText">Регистрация</h4>
+                    </div>
+                    <div class="authContainer">
+                        <div class="inputBlock">
+                            <label for="regEmail">Почта</label>
+                            <input type="email" id="regEmail" placeholder="Почта">
+                        </div>
+                        <div class="inputBlock">
+                            <label for="regFullName">ФИО</label>
+                            <input type="text" id="regFullName" placeholder="ФИО">
+                        </div>
+                        <div class="inputBlock">
+                            <label for="regBirthData">Дата рождения</label>
+                            <input type="date" id="regBirthData" required>
+                        </div>
+                        <div class="inputBlock">
+                            <label for="regPassword">Пароль</label>
+                            <input type="password" id="regPassword" placeholder="Пароль">
+                        </div>
+                        <div class="inputBlock">
+                            <label for="regAvatar">Аватар</label>
+                            <input type="file" id="regAvatar" accept="image/*">
+                        </div>
+                    </div>
+                    <button id="registerBtn">Зарегистрироваться</button>
+                    <button id="toLogin" class="toggleBtn">Уже зарегистрированы?</button>
+                </div>
+            </div>
+        </div>
+        <div id="errorContainer"></div>
+    </body>
+</html>

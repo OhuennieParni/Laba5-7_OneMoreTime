@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- 24ВП2 Щипалкин А.А. Вариант 22 -->
+<html>
+    <head>
+        <title>Cabinet</title>
+        <link href="../CSS/MyStyle1.css" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="#">
+        <script src="../JS/Cabinet.js" defer></script>
+        <meta charset="UTF-8">
+        <script src="../JS/lib/jquery.js" type="text/javascript"></script>
+    </head>
+    
+    <body>      
+        
+        <div class="cabinet-box">
+
+            <h1 class="cabinet-title">Личный кабинет</h1>
+
+            <div class="cabinet-row">
+                <div class="cab-label">Ваше ФИО:</div>
+                <div class="cab-value" id="fio"></div>
+            </div>
+
+            <div class="cabinet-row">
+                <div class="cab-label">Email:</div>
+                <div class="cab-value" id="email"></div>
+            </div>
+
+            <div class="cabinet-row">
+                <div class="cab-label">Дата рождения:</div>
+                <div class="cab-value" id="birth"></div>
+            </div>
+
+            <div class="cabinet-row">
+                <div class="cab-label">Количество посещений:</div>
+                <div class="cab-value" id="visits"></div>
+            </div>
+
+            <div class="cabinet-row">
+                <div class="cab-label">Статус:</div>
+                <div class="cab-value" id="status"></div>
+            </div>
+
+            <div class="cabinet-row avatar-row">
+                <div class="cab-label">Аватар:</div>
+                <img id="avatar" class="cab-avatar" src="">
+            </div>
+
+            <div class="cab-buttons">
+                <button id="editProfile" class="cab-btn">Редактировать профиль</button>
+                <button id="logout" class="cab-btn logout" onclick="location.href='../index.html'">Назад</button>
+            </div>
+            
+            <div id="editModal" class="edit-modal hidden">
+                <h2>Редактировать профиль</h2>
+
+                <div class="edit-row">
+                    <label>ФИО:</label>
+                    <input type="text" id="editFullName">
+                </div>
+                
+                <div class="edit-row">
+                    <label>Email:</label>
+                    <input type="text" id="editEmail">
+                </div>
+                
+                <div class="edit-row">
+                    <label>Дата рождения:</label>
+                    <input type="date" id="editBirth">
+                </div>
+
+                <div class="edit-row">
+                    <label>Аватар:</label>
+                    <input type="file" id="editAvatar" accept="image/*">
+                </div>
+
+                <div class="edit-btns">
+                    <button id="saveEdit" class="cab-btn">Сохранить</button>
+                    <button id="cancelEdit" class="cab-btn logout">Отмена</button>
+                </div>
+            </div>
+
+        </div>
+        
+    </body>
+</html>
