@@ -136,6 +136,9 @@ function renderRequests(list) {
                 <img class="request-image" src="${r.imagePath ?? ""}" alt="img/defaultAvatar.png">
         
                 <p class="request-author">Автор: ${r.user?.fullName ?? "Неизвестно"}</p>
+                <p class="request-addData">Дата добавления: ${r.created_at}</p>
+                <p class="request-UpData">Дата последнего обновления: ${r.updated_at}</p>
+                <p class="request-status">Статус: ${r.status}</p>
             </div>
         `);
 

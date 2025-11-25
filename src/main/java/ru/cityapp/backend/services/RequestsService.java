@@ -38,7 +38,7 @@ public class RequestsService {
         r.setUser(user);
         r.setTitle(title);
         r.setDescription(description);
-        r.setStatus("pending");
+        r.setStatus("approved");
 
         // ---------- Сохранение картинки ----------
         if (image != null && !image.isEmpty()) {
