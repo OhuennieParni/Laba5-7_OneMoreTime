@@ -22,6 +22,7 @@ function updateHeader(user) {
     const box1 = $("#visits");
     const box = $("#user-buttons");
     const drop= $("#drop");
+    const Addrequest = $("#AddRequests");
     box.empty(); // очищаем
     box1.empty();
 
@@ -39,7 +40,10 @@ function updateHeader(user) {
         <button class="btn" onclick="location.href='Pages/Cabinet.html'">Личный кабинет</button>
     `);
     
-    
+    Addrequest.append (`
+        <div class="center"><button class="btn" id="addRequest" onclick="location.href='Pages/Addnews.html'">Оставить запрос</button></div>
+    `);
+        
     box1.append("Посещения: " + user.visits);
 
     // МОДЕРАТОР
