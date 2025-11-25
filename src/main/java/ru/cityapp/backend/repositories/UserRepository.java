@@ -9,8 +9,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // поиск по email
     User findByEmail(String email);
     User findByFullName(String fullName);
-    // поиск по роли
-    java.util.List<User> findByRole(String role);
 
     // проверка существования email
     boolean existsByEmail(String email);

@@ -12,6 +12,14 @@ $(document).ready(function () {
             updateHeader({ authenticated: false });
         }
     });
+    
+     $.ajax({
+        url: "/api/requests/approved",
+        method: "GET",
+        success: function (requests) {
+            renderRequests(requests);
+        }
+    });
 
 });
 
@@ -98,3 +106,46 @@ updateServerTime();
 $("#dropbtn").on("click", function () {
     $(".dropdown").toggleClass("active");
 });
+
+//Функционал Карточек запросов
+
+function trimWords(text, count = 8) {
+    const parts = text.split(" ");
+    return parts.length <= count
+        ? text
+        : parts.slice(0, count).join(" ") + "...";
+}
+
+function renderRequests(list) {
+    const box = $("#requestsList");
+    box.empty();
+
+    list.forEach(r => {
+        const card = $(`
+            <div class="request-card">
+                <h2 class="request-title">${r.title}</h2>
+
+                <p class="request-preview">
+                    ${trimWords(r.description)}
+                </p>
+
+                <p class="request-full">
+                    ${r.description}
+                </p>
+
+                <img class="request-image" src="${r.imagePath ?? ""}" alt="img/defaultAvatar.png">
+        
+                <p class="request-author">Автор: ${r.user?.fullName ?? "Неизвестно"}</p>
+            </div>
+        `);
+
+        // поведение "раскрыть / свернуть"
+        card.on("click", function () {
+            $(this).find(".request-preview").toggle();
+            $(this).find(".request-full").toggle();
+            $(this).find(".request-image").toggle();
+        });
+
+        box.append(card);
+    });
+}

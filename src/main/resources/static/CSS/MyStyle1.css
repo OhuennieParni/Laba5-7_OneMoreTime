@@ -367,3 +367,45 @@ input {
     gap: 20px;
     width: 400px;
 }
+
+/*Стили для запросов*/
+.request-card {
+    background: rgba(255,255,255,0.15);
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(14px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.request-card:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-5px);
+}
+
+.request-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.request-preview {
+    font-size: 20px;
+    opacity: 0.85;
+}
+
+.request-full {
+    margin-top: 15px;
+    font-size: 20px;
+    display: none;
+}
+
+.request-image {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 16px;
+    margin-top: 15px;
+    display: none;
+}
