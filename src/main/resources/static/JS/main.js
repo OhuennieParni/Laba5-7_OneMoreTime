@@ -49,13 +49,13 @@ function updateHeader(user) {
     `);
     
     Addrequest.append (`
-        <div class="center"><button class="btn" id="addRequest" onclick="location.href='Pages/Addnews.html'">Оставить запрос</button></div>
+        <div class="center"><button class="btn" id="addRequest" onclick="location.href='Pages/AddRequest.html'">Оставить запрос</button></div>
     `);
         
     box1.append("Посещения: " + user.visits);
 
     // МОДЕРАТОР
-    if (user.role === "moder" || user.role === "moder") {
+    if (user.role === "moder") {
         box.append(`
             <button class="btn" onclick="location.href='Pages/Addnews.html'">Добавить новость</button>
             <button class="btn" onclick="location.href='validation.html'">Проверить запросы</button>
@@ -136,9 +136,11 @@ function renderRequests(list) {
                 <img class="request-image" src="${r.imagePath ?? ""}" alt="img/defaultAvatar.png">
         
                 <p class="request-author">Автор: ${r.user?.fullName ?? "Неизвестно"}</p>
-                <p class="request-addData">Дата добавления: ${r.created_at}</p>
-                <p class="request-UpData">Дата последнего обновления: ${r.updated_at}</p>
-                <p class="request-status">Статус: ${r.status}</p>
+                <p class="request-addData">Дата добавления: ${r.createdAtFormatted}</p>
+                <p class="request-UpData">Дата последнего обновления: ${r.updatedAtFormatted}</p>
+                <div class="request-status">
+                    ${getStatusHtml(r.status)}
+                </div>
             </div>
         `);
 
@@ -151,4 +153,18 @@ function renderRequests(list) {
 
         box.append(card);
     });
+    
+    function getStatusHtml(status) {
+        switch (status) {
+            case "done":
+                return `<span class="status-badge status-done">Выполнено</span>`;
+            case "approved":
+                return `<span class="status-badge status-approved">Выполняется</span>`;
+            case "in_progress":
+                return `<span class="status-badge status-approved">Выполняется</span>`;
+            case "pending":
+            default:
+                return `<span class="status-badge status-pending">Ожидает проверки</span>`;
+        }
+    }
 }

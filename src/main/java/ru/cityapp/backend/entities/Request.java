@@ -1,8 +1,10 @@
 package ru.cityapp.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @Entity
@@ -40,5 +42,17 @@ public class Request {
     @PreUpdate
     protected void onUpdate() {
         updated_at = LocalDateTime.now();
+    }
+
+    @JsonProperty("createdAtFormatted")
+    public String getCreatedAtFormatted() {
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+        return created_at.format(f);
+    }
+
+    @JsonProperty("updatedAtFormatted")
+    public String getUpdatedAtFormatted() {
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+        return updated_at.format(f);
     }
 }

@@ -36,7 +36,7 @@ public class RequestsController {
 
     // Модератор видит все pending
     @GetMapping("/pending")
-    public List<Request> getPending() {
+    public List<Request> findAll() {
         return requestService.getPendingRequests();
     }
 
@@ -47,5 +47,10 @@ public class RequestsController {
             @RequestParam("status") String status
     ) {
         return requestService.updateStatus(id, status);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteRequest(@PathVariable Long id) {
+        requestService.deleteRequest(id);
     }
 }

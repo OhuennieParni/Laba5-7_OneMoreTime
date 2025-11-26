@@ -38,7 +38,7 @@ public class RequestsService {
         r.setUser(user);
         r.setTitle(title);
         r.setDescription(description);
-        r.setStatus("approved");
+        r.setStatus("pending");
 
         // ---------- Сохранение картинки ----------
         if (image != null && !image.isEmpty()) {
@@ -70,14 +70,14 @@ public class RequestsService {
     //   ЗАПРОСЫ НА ГЛАВНУЮ
     // -------------------------
     public List<Request> getApprovedRequests() {
-        return requestRepository.findByStatus("approved");
+        return requestRepository.findApprovedSorted(List.of("approved", "done"));
     }
 
     // -------------------------
     //   ДЛЯ МОДЕРАТОРА
     // -------------------------
     public List<Request> getPendingRequests() {
-        return requestRepository.findAll();
+        return requestRepository.findApprovedSorted(List.of("approved", "done", "pending"));
     }
 
     // -------------------------
@@ -91,4 +91,9 @@ public class RequestsService {
         req.setStatus(newStatus);
         return requestRepository.save(req);
     }
+
+    public void deleteRequest(Long id) {
+        requestRepository.deleteById(id);
+    }
+
 }

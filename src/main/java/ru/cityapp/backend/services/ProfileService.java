@@ -64,6 +64,9 @@ public class ProfileService {
 
         // --- обновление аватара ---
         if (avatar != null && !avatar.isEmpty()) {
+
+            deleteOldAvatar(user);
+
             try {
                 String fileName = UUID.randomUUID() + "_" + avatar.getOriginalFilename();
                 Path uploadPath = Paths.get("uploads/avatars");
@@ -87,5 +90,27 @@ public class ProfileService {
         userRepository.save(user);
 
         return new UserDto(user);
+    }
+
+    /**
+     * Функция, удаляющая старый аватар пользователя из хранилища сервера
+     * @param user - объект пользователя
+     */
+    private void deleteOldAvatar(User user) {
+
+        String oldPath = user.getAvatarPath();
+
+        if (oldPath == null) return;
+
+        Path filePath = Paths.get("uploads").resolve(oldPath.replace("/avatars/", "avatars/"));
+
+        try {
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+                System.out.println("Старая аватарка удалена: " + filePath);
+            }
+        } catch (Exception e) {
+            System.out.println("Не удалось удалить старый аватар: " + filePath);
+        }
     }
 }
