@@ -17,7 +17,8 @@ $(document).ready(function () {
         url: "/api/requests/approved",
         method: "GET",
         success: function (requests) {
-            renderRequests(requests);
+            ALL_REQUESTS = requests; // сохраняем оригинальный список
+            renderRequests(requests); // рисуем
         }
     });
 
@@ -168,3 +169,13 @@ function renderRequests(list) {
         }
     }
 }
+
+$("#searchBox").on("input", function () {
+    const text = $(this).val().toLowerCase();
+
+    const filtered = ALL_REQUESTS.filter(r =>
+        r.title.toLowerCase().includes(text)
+    );
+
+    renderRequests(filtered);
+});
