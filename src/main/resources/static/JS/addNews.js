@@ -1,22 +1,39 @@
 var fullName = "";
 var currentDate = null;
 
+/**
+ * Проверяет авторизацию пользователя и его роль.
+ * Если пользователь не авторизован или не имеет роли moder/admin,
+ * выполняется перенаправление на страницу авторизации.
+ */
 $(document).ready(function () {
     $.ajax({
         url: '/api/auth/whoAmI',
         method: "GET",
         success: function(response) {
+                        
             if (!response.authenticated) {
-                showAlert("Вы должны быть авторизованы под модером/админом!");
+                // если как-то попал неавторизованный — отправляем обратно
+                window.location.href = "auth.html";
                 return;
             }
+
+             if (!response.role === "moder" || !response.role === "admin") {
+                // если как-то попал неавторизованный — отправляем обратно
+                window.location.href = "auth.html";
+                return;
+            }
+            
             fullName = response.fullName;
             getCurrentDate();
-        },
+        }
     });
 });
 
-
+/**
+ * Получает текущую серверную дату, чтобы не зависеть от локального времени
+ * пользователя, форматирует её в YYYY.MM.DD и сохраняет в переменную currentDate.
+ */
 function getCurrentDate() {
     $.ajax({
         url: "/api/getServerDate",
@@ -34,7 +51,15 @@ function getCurrentDate() {
     });
 }
 
-
+/**
+ * Обработчик создания новости.
+ * Выполняет:
+ *  - валидацию полей,
+ *  - проверку размера и наличия изображения,
+ *  - формирование FormData,
+ *  - отправку данных на сервер через AJAX.
+ * Используется FormData, поэтому отключены contentType и processData.
+ */
 $("#addRequest").on("click", function () {
         $("#errorContainer").empty();
 

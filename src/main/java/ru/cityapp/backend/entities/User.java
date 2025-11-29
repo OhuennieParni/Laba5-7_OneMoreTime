@@ -3,7 +3,10 @@ package ru.cityapp.backend.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Data   // генерирует геттеры/сеттеры/toString
+/**
+ * Сущность User — представляет пользователя системы.
+ */
+@Data
 @Entity
 @Table(name = "users")
 public class User {

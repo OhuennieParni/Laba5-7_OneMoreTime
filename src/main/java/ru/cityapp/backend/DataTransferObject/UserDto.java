@@ -3,6 +3,11 @@ package ru.cityapp.backend.DataTransferObject;
 import lombok.Data;
 import ru.cityapp.backend.entities.User;
 
+/**
+ * DTO (Data Transfer Object) для передачи данных о пользователе на клиент.
+ * Используется контроллерами авторизации, профиля, управления пользователями
+ * и в механизме проверки сессии (whoAmI).
+ */
 @Data
 public class UserDto {
     private boolean authenticated;
@@ -13,8 +18,8 @@ public class UserDto {
     private String role;
     private String avatarUrl;
     private String birthdate;
+    private boolean bannedStatus;
 
-    // ✔ Конструктор для авторизованного пользователя
     public UserDto(User u) {
         this.authenticated = true;
         this.id = u.getId();
@@ -24,9 +29,9 @@ public class UserDto {
         this.role = u.getRole();
         this.avatarUrl = u.getAvatarPath();
         this.birthdate = u.getBirthDate();
+        this.bannedStatus = u.isBannedStatus();
     }
 
-    // ✔ Конструктор для гостя
     public UserDto() {
         this.authenticated = false;
         this.id = null;

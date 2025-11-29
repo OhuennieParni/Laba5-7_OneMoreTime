@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-    // Загружаем данные о пользователе
     $.ajax({
         url: "/api/auth/whoAmI",
         method: "GET",
@@ -8,7 +7,6 @@ $(document).ready(function () {
             updateHeader(user);
         },
         error: function () {
-            // Если сервер не отвечает — выводим гостя
             updateHeader({ authenticated: false });
         }
     });
@@ -17,25 +15,32 @@ $(document).ready(function () {
         url: "/api/requests/approved",
         method: "GET",
         success: function (requests) {
-            ALL_REQUESTS = requests; // сохраняем оригинальный список
-            renderRequests(requests); // рисуем
+            ALL_REQUESTS = requests;
+            renderRequests(requests);
         }
     });
 
 });
 
-// ---------------------
-// ФУНКЦИЯ ПОСТРОЙКИ ШАПКИ
-// ---------------------
+/**
+ * Обновляет элементы верхнего меню в зависимости от статуса пользователя.
+ * Выполняет:
+ *  - отображение кнопок для гостя / пользователя / модератора / админа;
+ *  - добавление кнопки "Оставить запрос";
+ *  - вывод количества посещений;
+ *  - показ уведомления о бане, если user.bannedStatus = true;
+ *  - создание кнопки "Выход".
+ * @param {type} user - объект пользователя, полученный с сервера
+ * @returns {undefined}
+ */
 function updateHeader(user) {
     const box1 = $("#visits");
     const box = $("#user-buttons");
     const drop= $("#drop");
-    const Addrequest = $("#AddRequests");
-    box.empty(); // очищаем
+    const Addrequest = $("#forButton");
+    box.empty();
     box1.empty();
 
-    // НЕ авторизован
     if (!user.authenticated) {
         drop.append(`
             <button class="btn" onclick="location.href='Pages/auth.html'">Войти</button>
@@ -44,42 +49,68 @@ function updateHeader(user) {
         return;
     }
 
-    // ОБЫЧНЫЙ ПОЛЬЗОВАТЕЛЬ
+    if (user.bannedStatus === true) {
+        $("body").append(`
+            <div id="banOverlay">
+                <div class="ban-title">Ваш аккаунт заблокирован!</div>
+                <div class="ban-text">
+                    Умоляйте админа разбанить вас!
+                </div>
+                <button id="banExitBtn" class="btn ban-exit-btn">Выйти</button>
+            </div>
+        `);
+
+        $("#banExitBtn").on("click", function () {
+            logout();
+        });
+
+        $("#dropbtn").addClass("hidden");
+        $("#user-buttons").empty();
+        return;
+    }
+
     box.append(`
         <button class="btn" onclick="location.href='Pages/Cabinet.html'">Личный кабинет</button>
     `);
     
     Addrequest.append (`
-        <div class="center"><button class="btn" id="addRequest" onclick="location.href='Pages/AddRequest.html'">Оставить запрос</button></div>
+        <div class="center"><button class="btn" id="addRequest" onclick="
+        location.href='Pages/AddRequest.html'">Оставить запрос</button></div>
     `);
         
     box1.append("Посещения: " + user.visits);
 
-    // МОДЕРАТОР
     if (user.role === "moder") {
         box.append(`
-            <button class="btn" onclick="location.href='Pages/Addnews.html'">Добавить новость</button>
-            <button class="btn" onclick="location.href='validation.html'">Проверить запросы</button>
+            <button class="btn" onclick="location.href='Pages/Addnews.html'">
+            Добавить новость</button>
+            <button class="btn" onclick="location.href='Pages/validation.html'">
+            Проверить запросы</button>
         `);
     }
 
-    // АДМИН
     if (user.role === "admin") {
         box.append(`
-            <button class="btn" onclick="location.href='Pages/UsersControl.html'">Управление пользователями</button>
-            <button class="btn" onclick="location.href='Pages/Addnews.html'">Добавить новость</button>
-            <button class="btn" onclick="location.href='Pages/validation.html'">Проверить запросы</button>
+            <button class="btn" onclick="location.href='Pages/UsersControl.html'">
+            Управление пользователями</button>
+            <button class="btn" onclick="location.href='Pages/Addnews.html'">
+            Добавить новость</button>
+            <button class="btn" onclick="location.href='Pages/validation.html'">
+            Проверить запросы</button>
         `);
     }
     
     box.append(`
-        <button class="btn" onclick="logout()">Выход</button>
+        <button class="btn logout-btn" onclick="logout()">Выход</button>
     `);
 }
 
-// ---------------------
-// ВЫХОД ИЗ АККАУНТА
-// ---------------------
+/**
+ * Выполняет выход пользователя из аккаунта.
+ * Отправляет запрос на /api/auth/logout, после чего перенаправляет на главную 
+ * страницу.
+ * @returns {undefined}
+ */
 function logout() {
     $.ajax({
         url: "/api/auth/logout",
@@ -90,7 +121,12 @@ function logout() {
     });
 }
 
-//Серверное время
+/**
+ * апрашивает у сервера текущее московское время
+ * и отображает его в элементе #time.
+ * 
+ * @returns {undefined}
+ */
 function updateServerTime() {
     $.ajax({
         url: "/api/time",
@@ -108,8 +144,14 @@ $("#dropbtn").on("click", function () {
     $(".dropdown").toggleClass("active");
 });
 
-//Функционал Карточек запросов
 
+/**
+ * Обрезает текст до указанного количества слов.
+ * 
+ * @param {type} text - оригинальный текст
+ * @param {type} count - количество слов, которые нужно оставить
+ * @returns {String} - короткий текст или исходный, если слов меньше, чем лимит
+ */
 function trimWords(text, count = 8) {
     const parts = text.split(" ");
     return parts.length <= count
@@ -117,6 +159,21 @@ function trimWords(text, count = 8) {
         : parts.slice(0, count).join(" ") + "...";
 }
 
+/**
+ * Отрисовывает список заявок на странице.
+ * Каждая карточка включает:
+ *  - заголовок;
+ *  - краткий текст (обрезанный);
+ *  - полный текст (скрыт);
+ *  - изображение;
+ *  - автора заявки;
+ *  - даты создания и обновления;
+ *  - статус заявки.
+ * Также добавляется функционал раскрытия / сворачивания карточки.
+ * 
+ * @param {type} list - массив заявок с сервера
+ * @returns {undefined}
+ */
 function renderRequests(list) {
     const box = $("#requestsList");
     box.empty();
@@ -134,7 +191,7 @@ function renderRequests(list) {
                     ${r.description}
                 </p>
 
-                <img class="request-image" src="${r.imagePath ?? ""}" alt="img/defaultAvatar.png">
+                <img class="request-image" src="${r.imagePath ?? ""}" alt="">
         
                 <p class="request-author">Автор: ${r.user?.fullName ?? "Неизвестно"}</p>
                 <p class="request-addData">Дата добавления: ${r.createdAtFormatted}</p>
@@ -155,6 +212,12 @@ function renderRequests(list) {
         box.append(card);
     });
     
+    /**
+     * Возвращает HTML-разметку для бейджа статуса заявки.
+     * 
+     * @param {type} status - статус заявки
+     * @returns {String} - HTML строки со статусом
+     */
     function getStatusHtml(status) {
         switch (status) {
             case "done":
@@ -170,6 +233,9 @@ function renderRequests(list) {
     }
 }
 
+/**
+ * Функционал поиска по словам и мгновенное обновление при вводе символа
+ */
 $("#searchBox").on("input", function () {
     const text = $(this).val().toLowerCase();
 

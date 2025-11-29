@@ -25,25 +25,25 @@ $("#addRequest").on("click", function () {
 
 
     if(title === "") {
-        alert("Заполните поле заголовка, пожалуйста!");
+        showAlert("Заполните поле заголовка, пожалуйста!");
         return;
     }
     
     if(description === "") {
-        alert("Заполните текст заявки, пожалуйста!");
+        showAlert("Заполните текст заявки, пожалуйста!");
         return;
     }
 
     if (image) {
 
         if (image.size > 30 * 1024 * 1024) {
-            alert("Размер аватара не должен превышать 30 МБ");
+            showAlert("Размер аватара не должен превышать 30 МБ");
             return;
         }
 
         const validTypes = ["image/jpeg", "image/png", "image/webp"];
         if (!validTypes.includes(image.type)) {
-            alert("Разрешены только JPG, PNG или WEBP");
+            showAlert("Разрешены только JPG, PNG или WEBP");
             return;
         }
     }
@@ -68,14 +68,3 @@ $("#addRequest").on("click", function () {
         }
     });
 });
-
-function showAlert(message) {
-    const error = $('<div class="errorAlert"></div>').text(message);
-    $('#errorContainer').append(error);
-
-    setTimeout(() => {
-        error.fadeOut(500, function () {
-            $(this).remove();
-        });
-    }, 5000);
-}

@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('../img/bg.png') center/cover no-repeat fixed;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Заголовки блоков */
+.news-title-main,
+.cabinet-title,
+.add-news-title,
+.requests-title,
+.users-title {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 42px;
+    color: #ffffff;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
+/* Для герба */
+.gerb {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    margin-right: 20px;
+    filter: drop-shadow(0 0 8px rgba(0,0,0,0.5));
+}

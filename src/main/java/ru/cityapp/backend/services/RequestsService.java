@@ -13,6 +13,16 @@ import java.nio.file.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Сервис, отвечающий за обработку пользовательских заявок.
+ * Реализует:
+ *  - создание заявки пользователем;
+ *  - сохранение изображения к заявке;
+ *  - получение заявок для главной страницы;
+ *  - получение заявок для модератора;
+ *  - изменение статуса (approved / pending / done);
+ *  - удаление заявки.
+ */
 @Service
 public class RequestsService {
 
@@ -22,6 +32,15 @@ public class RequestsService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Создаёт новую заявку от текущего авторизованного пользователя.
+     *
+     * @param title - заголовок
+     * @param description - основной текст заявки
+     * @param image - картинка к заявке (необязательно)
+     * @param session - текущая HTTP-сессия
+     * @return - сохранённая заявка
+     */
     public Request addRequest(String title,
                               String description,
                               MultipartFile image,
@@ -40,7 +59,6 @@ public class RequestsService {
         r.setDescription(description);
         r.setStatus("pending");
 
-        // ---------- Сохранение картинки ----------
         if (image != null && !image.isEmpty()) {
             try {
                 String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
@@ -66,23 +84,32 @@ public class RequestsService {
 
         return requestRepository.save(r);
     }
-    // -------------------------
-    //   ЗАПРОСЫ НА ГЛАВНУЮ
-    // -------------------------
+
+    /**
+     * Возвращает список заявок для главной страницы.
+     *
+     * @return - список заявок для основной ленты
+     */
     public List<Request> getApprovedRequests() {
         return requestRepository.findApprovedSorted(List.of("approved", "done"));
     }
 
-    // -------------------------
-    //   ДЛЯ МОДЕРАТОРА
-    // -------------------------
+    /**
+     * Возвращает заявки для модератора.
+     *
+     * @return список всех заявок, доступных модератору
+     */
     public List<Request> getPendingRequests() {
         return requestRepository.findApprovedSorted(List.of("approved", "done", "pending"));
     }
 
-    // -------------------------
-    //   УТВЕРЖДЕНИЕ / ОТКЛОНЕНИЕ
-    // -------------------------
+    /**
+     * Обновляет статус заявки.
+     *
+     * @param id - id заявки
+     * @param newStatus - новый статус
+     * @return - обновлённая заявка
+     */
     public Request updateStatus(Long id, String newStatus) {
 
         Request req = requestRepository.findById(id)
@@ -92,6 +119,11 @@ public class RequestsService {
         return requestRepository.save(req);
     }
 
+    /**
+     * Удаляет заявку из БД.
+     *
+     * @param id - id заявки, которую нужно удалить
+     */
     public void deleteRequest(Long id) {
         requestRepository.deleteById(id);
     }

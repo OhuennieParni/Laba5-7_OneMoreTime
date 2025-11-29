@@ -1,19 +1,15 @@
 $(document).ready(function () {
-
-    // Загружаем данные о пользователе
     $.ajax({
         url: "/api/auth/whoAmI",
         method: "GET",
         success: function (user) {
             
             if (!user.authenticated) {
-                // если как-то попал неавторизованный — отправляем обратно
                 window.location.href = "auth.html";
                 return;
             }
 
             if (!user.role === "moder" || !user.role === "admin") {
-                // если как-то попал неавторизованный — отправляем обратно
                 window.location.href = "auth.html";
                 return;
             }
@@ -33,6 +29,14 @@ $(document).ready(function () {
 
 });
 
+/**
+ * Обрезает текст до заданного количества слов.
+ * Используется для формирования краткого превью в карточках заявок.
+ * 
+ * @param {type} text - исходный текст
+ * @param {type} count - сколько слов оставить
+ * @returns {String} - сокращенный текст или полный, если слов меньше, чем лимит
+ */
 function trimWords(text, count = 8) {
     const parts = text.split(" ");
     return parts.length <= count
@@ -40,16 +44,26 @@ function trimWords(text, count = 8) {
         : parts.slice(0, count).join(" ") + "...";
 }
 
+/**
+ * Отрисовывает список заявок и формирует интерактивные карточки.
+ * Для каждой заявки:
+ *  - показывает краткий и полный текст;
+ *  - отображает изображение (скрыто по умолчанию);
+ *  - выводит автора, даты создания/обновления и статус;
+ *  - добавляет кнопки действий (Принять/Отклонить/Выполнено) в зависимости от статуса;
+ *  - подключает обработчики смены статуса и удаления;
+ *  - включает поведение "раскрыть/свернуть" по клику на карточку.
+ *  
+ * @param {type} list - массив заявок
+ * @returns {undefined}
+ */
 function renderRequests(list) {
     const box = $("#requestsList");
     box.empty();
 
     list.forEach(r => {
-
-        // ⛔ Если done — не показываем карточку
         if (r.status === "done") return;
 
-        // ================= КНОПКИ =================
         let buttonsHtml = "";
 
         if (r.status === "pending") {
@@ -64,7 +78,6 @@ function renderRequests(list) {
             `;
         }
 
-        // ================= КАРТОЧКА =================
         const card = $(`
             <div class="request-card">
                 <h2 class="request-title">${r.title}</h2>
@@ -84,15 +97,13 @@ function renderRequests(list) {
                 </div>
             </div>
         `);
-
-        // ========== КЛИК ПО КАРТОЧКЕ ===============
+        
         card.on("click", function () {  
             $(this).find(".request-preview").toggle();
             $(this).find(".request-full").toggle();
             $(this).find(".request-image").toggle();
         });
         
-         // ========== ОБРАБОТКА КНОПОК ===============
         card.find("#approve").on("click", function (event) {
             $.post("/api/requests/setStatus", {
                 id: r.id,

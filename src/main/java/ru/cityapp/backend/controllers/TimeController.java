@@ -7,11 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * Технический контроллер для получения текущего серверного времени и даты.
+ * Используется клиентом для отображения точного времени и синхронизации
+ * с сервером, чтобы избежать зависимости от локального времени на устройстве пользователя.
+ */
 @RestController
 @RequestMapping("/api")
 public class TimeController {
 
+    /**
+     * Возвращает текущее серверное время в формате HH:mm:ss.
+     *
+     * @return карта с текущим временем сервера
+     */
     @GetMapping("/time")
     public Map<String, String> getTime() {
 
@@ -21,6 +30,11 @@ public class TimeController {
         return Map.of("time", time);
     }
 
+    /**
+     * Возвращает текущую серверную дату и время.
+     *
+     * @return - карта, содержащая текущее LocalDateTime сервера
+     */
     @GetMapping("/getServerDate")
     public Map<String, LocalDateTime> getDate() {
         Map<String, LocalDateTime> response = new HashMap<>();

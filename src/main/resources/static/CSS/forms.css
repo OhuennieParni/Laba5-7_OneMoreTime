@@ -1,0 +1,250 @@
+/* ===== forms.css ===== */
+
+/* Общие инпуты */
+input {
+    background: rgba(0, 40, 60, 0.3);
+    backdrop-filter: blur(20px);
+    width: 100%;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.95);
+    padding: 5px 10px;
+    border: 3px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    transition: box-shadow 0.2s ease-out, background 0.3s ease-out, transform 0.1s ease-in;
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 18px;
+}
+
+input:focus {
+    box-shadow: 0px 0px 10px rgba(0, 191, 255, 0.6);
+    background: rgba(0, 40, 60, 0.5);
+    outline: none;
+}
+
+input:hover {
+    transform: scale(1.01);
+}
+
+/* Текстовые поля добавления новостей/заявок */
+.add-textarea,
+.add-file {
+    width: 100%;
+    height: 300px;
+    padding: 18px;
+    background: rgba(10, 50, 80, 0.45);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 18px;
+    color: white;
+    font-size: 18px;
+    backdrop-filter: blur(14px);
+    transition: all 0.3s ease;
+    margin-bottom: 25px;
+}
+
+.add-textarea:focus {
+    outline: none;
+    background: rgba(20, 70, 110, 0.65);
+    border-color: rgba(0,191,255,0.7);
+    box-shadow: 0 0 25px rgba(0,191,255,0.4);
+}
+
+.add-news-box .add-textarea,
+.add-news-box input[type="text"],
+.add-news-box input[type="file"] {
+    height: 180px;           /* было 300px — теперь меньше */
+    font-size: 16px;         /* немного уменьшили размер текста */
+    padding: 12px;           /* чуть компактнее */
+}
+
+.add-news-box input#title {
+    max-width: 400px;   /* если хочешь, чтобы было не во всю ширину */
+    height: 38px;
+    font-size: 17px;
+    padding: 6px 12px;
+}
+
+.edit-row,
+.edit-row * {
+    color: #fff !important;
+}
+
+/* Поле поиска заявок */
+.search-input {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    font-size: 18px;
+    border: 2px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.2);
+    color: white;
+    backdrop-filter: blur(12px);
+}
+
+.search-input::placeholder {
+    color: #ddd;
+}
+
+/* Модалка редактирования профиля/юзера */
+.edit-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #89d8d0;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    width: 400px;
+    z-index: 999;
+}
+
+.edit-row {
+    position: relative;
+    width: 70%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-row label {
+    font-weight: bold;
+    color: #1f2d3d;
+}
+
+/* Модалка редактирования новостей/юзера (из showNews.js / manageUsers.js) */
+.modal-edit label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+.modal-edit input,
+.modal-edit textarea {
+    width: 100%;
+    padding: 6px;
+    margin: 5px 0 10px 0;
+}
+
+.edit-preview {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    margin: 10px 0;
+    border-radius: 6px;
+}
+
+/* Загрузка файла (аватар/картинка новости) */
+.fileInputBlock {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.fileLabel {
+    position: relative;
+    top: 0;
+    left: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.fileUploadWrapper {
+    background: rgba(0, 40, 60, 0.3);
+    border: 2px solid rgba(255,255,255,0.35);
+    border-radius: 12px;
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: .2s;
+}
+
+.fileUploadWrapper:hover {
+    transform: scale(1.01);
+    border-color: rgba(0,191,255,0.6);
+}
+
+.filePreviewContainer {
+    width: 100%;
+    max-height: 260px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.filePreview {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 0 12px rgba(0,0,0,0.25);
+}
+
+.filePlaceholder {
+    color: rgba(255,255,255,0.75);
+    font-size: 18px;
+}
+
+.fileBtn {
+    align-self: flex-start;
+    padding: 6px 12px;
+    background: rgba(20, 40, 60, 0.6);
+    border: 1px solid rgba(30,144,255,0.4);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: .2s;
+}
+
+.fileBtn:hover {
+    background: rgba(20, 40, 60, 0.9);
+}
+
+.fileUploadWrapper input[type="file"] {
+    display: none;
+}
+
+/* Общий стиль селектов в модалке */
+.modal-edit select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(25, 55, 85, 0.55);
+    color: #fff;
+
+    appearance: none;             /* убираем системный стиль */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+/* При наведении */
+.modal-edit select:hover {
+    border-color: rgba(255,255,255,0.45);
+}
+
+/* При фокусе */
+.modal-edit select:focus {
+    border-color: #4ea3ff;
+    box-shadow: 0 0 6px rgba(78,163,255,0.4);
+    outline: none;
+}
+
+/* Стиль внутреннего текста */
+.modal-edit select option {
+    background: #1c2e45;
+    color: #fff;
+    padding: 10px;
+}
+

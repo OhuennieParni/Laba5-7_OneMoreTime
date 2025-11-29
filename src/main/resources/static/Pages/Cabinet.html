@@ -5,9 +5,11 @@
         <title>Cabinet</title>
         <link href="../CSS/MyStyle1.css" rel="stylesheet" type="text/css"/>
         <link rel="shortcut icon" href="#">
+        <script src="../JS/lib/jquery.js" type="text/javascript"></script>
+        <script src="../JS/messages.js"></script>
+        <script src="../JS/validators.js"></script>
         <script src="../JS/Cabinet.js" defer></script>
         <meta charset="UTF-8">
-        <script src="../JS/lib/jquery.js" type="text/javascript"></script>
     </head>
     
     <body>      
@@ -47,8 +49,12 @@
             </div>
 
             <div class="cab-buttons">
-                <button id="editProfile" class="cab-btn">Редактировать профиль</button>
-                <button id="logout" class="cab-btn logout" onclick="location.href='../index.html'">Назад</button>
+                <button id="editProfile" class="cab-btn">Редактировать 
+                    профиль</button>
+                <button id="exit" class="cab-btn logout" 
+                        onclick="location.href='../index.html'">Назад</button>
+                <button id="logout" class="cab-btn logout" 
+                        onclick="logout()">Выйти из аккаунта</button>
             </div>
             
             <div id="editModal" class="edit-modal hidden">

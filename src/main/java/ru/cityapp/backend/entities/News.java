@@ -3,6 +3,9 @@ package ru.cityapp.backend.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Сущность News — представляет новость в системе.
+ */
 @Data
 @Entity
 @Table(name = "news")

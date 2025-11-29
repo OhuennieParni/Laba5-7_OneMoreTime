@@ -5,7 +5,15 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-//Это для нормального поиска картинки вне папки src! типа, когда приходит запрос "НАДИ МНЕ КРАТИНКУ, МРАЗЬ" Он ее ищет в uploads, avatars, а то в SRC они при добавлении не отображаются, пока сервак не обновишь
+/**
+ * Конфигурация статических ресурсов.
+ * Настраивает обработку URL, которые должны отдавать статические файлы
+ * (аватары, изображения новостей, изображения запросов),
+ * загруженные пользователями и сохранённые вне каталога resources.
+ * Spring по умолчанию обслуживает файлы только из /static и /public,
+ * поэтому здесь создаются явные обработчики путей, которые указывают
+ * на реальные директории файловой системы (uploads/...).
+ */
 @Configuration
 public class StaticResourceConfig implements WebMvcConfigurer {
 

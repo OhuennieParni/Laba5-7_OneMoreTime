@@ -1,0 +1,207 @@
+/* ===== layout.css ===== */
+
+/* ВЕРХНЯЯ ПАНЕЛЬ */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: rgba(10, 35, 55, 0.88);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    z-index: 1000;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+.top-bar > div,
+.top-bar .logo {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.94);
+}
+
+.top-bar .logo {
+    font-size: 38px;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+
+/* Основные "карточки-страницы" */
+.news-container,
+.cabinet-box,
+.add-news-box,
+.requests-box,
+.users-box {
+    max-width: 1360px;
+    width: 90%;
+    margin: 120px auto 60px;
+    background: rgba(25, 55, 85, 0.58);
+    backdrop-filter: blur(28px);
+    border-radius: 32px;
+    padding: 44px;
+    border: 1px solid rgba(255,255,255,0.28);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.38);
+}
+
+/* Фиксированная высота и скролл для блока новостей и запросов */
+.news-container,
+#AddRequests {
+    max-height: 700px;
+    overflow-y: auto;
+    padding-right: 20px;
+}
+
+/* Красивый скролл */
+.news-container::-webkit-scrollbar,
+#AddRequests::-webkit-scrollbar {
+    width: 10px;
+}
+
+.news-container::-webkit-scrollbar-track,
+#AddRequests::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+}
+
+.news-container::-webkit-scrollbar-thumb,
+#AddRequests::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.35);
+    border-radius: 10px;
+}
+
+.news-container::-webkit-scrollbar-thumb:hover,
+#AddRequests::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.55);
+}
+
+.add-label {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Ряд "заголовок + кнопка" */
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* Строки в кабинете */
+.cabinet-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 500px;
+    border-bottom: 1px solid white;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.cab-label {
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.cab-value {
+    font-weight: normal;
+    font-size: 30px;
+}
+
+#avatar {
+    max-height: 200px;
+    max-width: 300px;
+}
+
+/* Группы кнопок внизу блоков */
+.cab-buttons,
+.add-buttons,
+.request-buttons,
+.user-buttons,
+.bottom-actions,
+.bottom-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin: 50px 0;
+}
+
+/* DROPDOWN Меню в шапке */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.drop-content {
+    position: absolute;
+    top: 45px;
+    right: 0;
+
+    background: rgba(25, 55, 85, 0.58);
+    backdrop-filter: blur(28px);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+
+    min-width: 100%;
+    width: max-content;       /* автоширина по самым длинным кнопкам */
+    max-width: 260px; 
+    text-align: center;
+
+    /* --- скрытое состояние --- */
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    padding: 0;
+    overflow: hidden;
+
+    transition: max-height 0.25s ease, opacity 0.25s ease;
+}
+
+
+.dropdown.active .drop-content {
+    max-height: 500px; /* запас */
+    opacity: 1;
+    visibility: visible;
+    padding: 10px;
+}
+
+.drop-content button {
+    width: 80%;
+    padding: 10px;
+    border: none;
+    background: #eee;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.drop-content button:hover {
+    background: #ddd;
+}
+
+/* Адаптив */
+@media (max-width: 900px) {
+    .top-bar {
+        padding: 0 15px;
+        height: 70px;
+    }
+
+    .top-bar .logo {
+        font-size: 28px;
+    }
+
+    .cab-btn,
+    .add-btn,
+    .req-btn,
+    .user-btn {
+        padding: 14px 30px;
+        font-size: 16px;
+        min-width: 180px;
+    }
+}

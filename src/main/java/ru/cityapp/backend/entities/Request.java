@@ -6,6 +6,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Сущность Request — пользовательская заявка (обращение).
+ */
 @Data
 @Entity
 @Table(name = "requests")
@@ -32,6 +35,13 @@ public class Request {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
+    /**
+     * Автоматически вызывается при создании записи
+     * Устанавливает:
+     *  - дату создания;
+     *  - дату обновления;
+     *  - статус "pending" по умолчанию.
+     */
     @PrePersist
     protected void onCreate() {
         created_at = LocalDateTime.now();
@@ -39,17 +49,31 @@ public class Request {
         if (status == null) status = "pending";
     }
 
+    /**
+     * Автоматически вызывается при обновлении записи.
+     * Обновляет поле updated_at.
+     */
     @PreUpdate
     protected void onUpdate() {
         updated_at = LocalDateTime.now();
     }
 
+    /**
+     * Форматированная дата создания для фронтенда.
+     * Пример: "14.02.25 18:41"
+     * @return - строка с датой создания
+     */
     @JsonProperty("createdAtFormatted")
     public String getCreatedAtFormatted() {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
         return created_at.format(f);
     }
 
+    /**
+     * Форматированная дата обновления для фронтенда.
+     *
+     * @return - строка с датой последнего обновления
+     */
     @JsonProperty("updatedAtFormatted")
     public String getUpdatedAtFormatted() {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");

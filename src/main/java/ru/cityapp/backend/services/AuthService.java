@@ -14,19 +14,41 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
+/**
+ * Сервис аутентификации и регистрации пользователей.
+ * Реализует бизнес-логику:
+ *  - регистрацию нового пользователя;
+ *  - вход по email + password;
+ *  - определение текущего авторизованного пользователя (whoAmI);
+ *  - первичную установку роли;
+ *  - работу с аватаром (загрузка, сохранение пути);
+ *  - управление сессией.
+ */
 @Service
 public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
 
-    // ---------- Регистрация ----------
+    /**
+     * Регистрирует нового пользователя.
+     *
+     * @param email - почта пользователя
+     * @param fullName - ФИО пользователя
+     * @param birthDate - дата рождения пользователя
+     * @param password - пароль пользователя
+     * @param avatar - аватар пользователя (необязательно)
+     * @param role - роль, если пользователь регистрируется администратором
+     * @param session - текущая Http сессия
+     * @return - DTO с данными сохранённого пользователя
+     */
     public UserDto register(
             String email,
             String fullName,
             String birthDate,
             String password,
             MultipartFile avatar,
+            String role,
             HttpSession session
     ) {
         if (userRepository.existsByEmail(email))
@@ -42,7 +64,15 @@ public class AuthService {
         user.setRole("user");
         user.setVisits(1);
 
-        // ----- сохранение аватара -----
+        String finalRole;
+        if ("admin".equals(role) || "moder".equals(role) || "user".equals(role)) {
+            finalRole = role;
+        } else {
+            finalRole = "user";
+        }
+
+        user.setRole(finalRole);
+
         if (avatar != null && !avatar.isEmpty()) {
             try {
                 String fileName = UUID.randomUUID() + "_" + avatar.getOriginalFilename();
@@ -58,7 +88,7 @@ public class AuthService {
                         StandardCopyOption.REPLACE_EXISTING
                 );
 
-                user.setAvatarPath("/uploads/avatars/" + fileName);
+                user.setAvatarPath("/avatars/" + fileName);
 
             } catch (Exception e) {
                 throw new RuntimeException("Ошибка сохранения аватара");
@@ -67,16 +97,21 @@ public class AuthService {
 
         User saved = userRepository.save(user);
 
-        // ---- автоматически логиним ----
-        session.setAttribute("userId", saved.getId());
+        if (role == null || role.isBlank()) {
+            session.setAttribute("userId", saved.getId());
+        }
 
         return new UserDto(saved);
     }
 
 
-
-
-    // ------------ Логин -------------
+    /**
+     * Авторизует пользователя по email и паролю.
+     *
+     * @param email - введенная почта
+     * @param password - введенный пароль
+     * @return - UserDto с данными авторизованного пользователя
+     */
     public UserDto login(String email, String password) {
         User user = userRepository.findByEmail(email);
 
@@ -86,28 +121,34 @@ public class AuthService {
         if (!user.getPassword().equals(password))
             throw new RuntimeException("Неверный пароль");
 
-        // увеличиваем visits
         user.setVisits(user.getVisits() + 1);
         userRepository.save(user);
 
         return new UserDto(user);
     }
 
-    // ---------- whoami ----------
+    /**
+     * Определяет текущего авторизованного пользователя по userId из сессии.
+     *
+     * @param session - текущая HTTP - сессия
+     * @return - UserDto:
+     *          - авторизованный пользователь, если userId существует и валиден;
+     *          - гость (authenticated = false), если пользователь не найден или userId нет.
+     */
     public UserDto whoAmI(HttpSession session) {
 
         Long userId = (Long) session.getAttribute("userId");
 
         if (userId == null) {
-            return new UserDto(); // гость
+            return new UserDto();
         }
 
         User user = userRepository.findById(userId).orElse(null);
 
         if (user == null) {
-            return new UserDto(); // тоже гость
+            return new UserDto();
         }
 
-        return new UserDto(user);  // авторизованный пользователь
+        return new UserDto(user);
     }
 }

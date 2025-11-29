@@ -8,9 +8,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/html.html to edit this
         <link rel="shortcut icon" href="#">
         <title>Администрация города</title>
         <link href="../CSS/MyStyle1.css" rel="stylesheet" type="text/css"/>
-        <script src="../JS/AddRequests.js" defer></script>
-        <meta charset="UTF-8">
         <script src="../JS/lib/jquery.js" type="text/javascript"></script>
+        <script src="../JS/AddRequests.js" defer></script>
+        <script src="../JS/messages.js"></script>
+        <script src="../JS/validators.js"></script>
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
@@ -18,19 +20,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/html.html to edit this
             <h1 class="add-news-title">Добавление запроса</h1>
 
             <div class="edit-row">
-                    <label>Заголовок</label>
-                    <input type="text" id="title">
+                <label class="add-label">Заголовок</label>
+                <input type="text" id="title">
             </div>
             
             <label class="add-label">Текст запроса</label>
-            <textarea id="newsText" class="add-textarea" placeholder="Введите текст запроса..."></textarea>
+            <textarea id="newsText" class="add-textarea" placeholder="Введите 
+                      текст запроса..."></textarea>
 
             <label class="add-label">Изображения</label>
-            <input type="file" id="RequestImage" class="add-file" accept="image/*" multiple>
+            <input type="file" id="RequestImage" class="add-file" 
+                   accept="image/*" multiple>
 
             <div class="add-buttons">
-                <button class="add-btn add-submit" id="addRequest">Добавить запрос</button>
-                <button class="add-btn add-cancel" onclick="location.href='../index.html'">Назад / Отмена</button>
+                <button class="add-btn add-submit" id="addRequest">Добавить 
+                    запрос</button>
+                <button class="add-btn add-cancel" 
+                        onclick="location.href='../index.html'">Назад / 
+                        Отмена</button>
             </div>
         </div>
         <div id="errorContainer"></div>

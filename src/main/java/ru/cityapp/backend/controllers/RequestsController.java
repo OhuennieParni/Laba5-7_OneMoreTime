@@ -10,6 +10,15 @@ import ru.cityapp.backend.services.RequestsService;
 
 import java.util.List;
 
+/**
+ * Контроллер для работы с пользовательскими запросами (обращениями).
+ * Функционал:
+ *  - создание нового запроса;
+ *  - получение списка подтверждённых запросов (для главной страницы);
+ *  - получение списка запросов, ожидающих проверки (для модератора);
+ *  - изменение статуса запроса;
+ *  - удаление запроса.
+ */
 @RestController
 @RequestMapping("/api/requests")
 public class RequestsController {
@@ -17,6 +26,16 @@ public class RequestsController {
     @Autowired
     private RequestsService requestService;
 
+    /**
+     * Создаёт новый пользовательский запрос.
+     *
+     * @param title - заголовок запроса
+     * @param description - текст запроса
+     * @param image - картинка к запросу (не обязательно)
+     * @param session - текущая HTTP-сессия
+     *
+     * @return - созданный объект Request
+     */
     @PostMapping(value = "/AddRequest",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Request addRequest(
@@ -28,19 +47,37 @@ public class RequestsController {
         return requestService.addRequest(title, description, image, session);
     }
 
-    // Запросы для главной страницы (approved)
+    /**
+     * возвращает список всех запросов со статусом "approved".
+     * Используются для отображения на главной странице.
+     *
+     * @return список подтверждённых запросов
+     */
     @GetMapping("/approved")
     public List<Request> getApproved() {
         return requestService.getApprovedRequests();
     }
 
-    // Модератор видит все pending
+
+    /**
+     * Возвращает список всех запросов со статусом "pending".
+     * Используется модератором для проверки новых обращений.
+     *
+     * @return список необработанных запросов
+     */
     @GetMapping("/pending")
     public List<Request> findAll() {
         return requestService.getPendingRequests();
     }
 
-    // Модератор меняет статус
+    /**
+     * Обновляет статус запроса.
+     *
+     * @param id - id запроса
+     * @param status - статус запроса (pending, approved, done)
+     *
+     * @return - обновлённый объект Request
+     */
     @PostMapping("/setStatus")
     public Request setStatus(
             @RequestParam("id") Long id,
@@ -49,6 +86,11 @@ public class RequestsController {
         return requestService.updateStatus(id, status);
     }
 
+    /**
+     * Удаляет запрос по указанному ID.
+     *
+     * @param id - id удаляемого запроса
+     */
     @DeleteMapping("/delete/{id}")
     public void deleteRequest(@PathVariable Long id) {
         requestService.deleteRequest(id);

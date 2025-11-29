@@ -3,6 +3,9 @@ package ru.cityapp.backend.DataTransferObject;
 import lombok.Data;
 import ru.cityapp.backend.entities.News;
 
+/**
+ * DTO (Data Transfer Object) для передачи данных о новости на клиент.
+ */
 @Data
 public class NewsDTO {
     private Long id;
